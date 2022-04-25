@@ -59,22 +59,33 @@ void autonomous(void) {
   // Insert autonomous user code here.
   // ..........................................................................
   // a password
+  // please see route.txt for the route details
   pid2 PID;
   FourBar.stop(hold);
   RightPiston.set(true);
   Clamp.set(true);
   DriveTrain.setTurnVelocity(80, percent);
-  PID.drive2(21);
+
+  // goal 1
+  PID.drive2(21); 
   DriveTrain.turnToHeading(-90, degrees);
   PID.drive2(-13);
   RightPiston.set(false);
   PID.drive2(12);
+
+  // mobile goal 1
   DriveTrain.turnToHeading(0, degrees);
   wait(0.2, sec);
   PID.drive2(25);
   Clamp.set(false);
+
+  // raise 4bar a bit
   FourBar.spinFor(forward, 400, deg, 100, rpm, false);
+
+  // turn to platfrom
   DriveTrain.turnToHeading(-30, degrees);
+
+  // run ring intake
 }
 
 /*---------------------------------------------------------------------------*/

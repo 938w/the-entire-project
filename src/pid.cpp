@@ -49,7 +49,7 @@ void pid2::drive2(double target, double velocity, double dir) {
   double derivative;
   double velocityFromTheError;
   double integral = 0;
-  double p = 110;
+  double p = 80;
   double i = 0;
   double d = 0.005;
 
