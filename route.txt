@@ -1,0 +1,35 @@
+facing forward
+drive forward
+turn left 90
+drive back
+clamp with back
+drive forward
+turn right 90
+forward 
+clamp with front
+lift fourbar (true)
+turn left ~ 30
+run ringtake
+drive forward
+turn a bit more after rings
+drive to platform
+lower fourbar to lower platform
+unclamp
+turn to heading 180
+drive forward to rings
+drop back
+turn to heading 0
+clamp
+lift fourbar
+put on platform
+back up
+turn right 90
+drive backward
+clamp red
+turn to heading ~ 150
+drive forward
+clamp goal
+drive forward
+lower platform
+unclamp
+
