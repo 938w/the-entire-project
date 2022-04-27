@@ -49,7 +49,7 @@ int myThread() {
     int notmovingcount = 0;
     double lastpos = RingMech.position(degrees);
     vex::this_thread::sleep_for(25);
-    if (lastpos-RingMech.position(deg)<1){
+    if (lastpos - RingMech.position(deg) < 1) {
       notmovingcount++;
     }
     if (notmovingcount >= 10) {
@@ -59,9 +59,8 @@ int myThread() {
       RingMech.stop();
       RingMech.spin(forward);
     }
-    
   }
-  return(0);
+  return (0);
 }
 
 /*---------------------------------------------------------------------------*/
@@ -84,13 +83,12 @@ void autonomous(void) {
   FourBar.stop(hold);
   RightPiston.set(true);
   Clamp.set(true);
-  vex::thread t(myThread);
-  
-  /*
+  FourBar.setVelocity(100, pct);
+  // vex::thread t(myThread);
   DriveTrain.setTurnVelocity(70, percent);
 
   // goal 1
-  PID.drive2(20.5); 
+  PID.drive2(20.5);
   DriveTrain.turnToHeading(-90, degrees);
   PID.drive2(-16, 10000);
   RightPiston.set(false);
@@ -106,33 +104,78 @@ void autonomous(void) {
   FourBar.spinFor(forward, 580, deg, 100, rpm, false);
 
   // turn to platfrom
-  DriveTrain.setTurnVelocity(40, percent);
-  DriveTrain.turnToHeading(-27, degrees);
-  wait (0.4, sec); 
+  DriveTrain.setTurnVelocity(30, percent);
+  DriveTrain.turnToHeading(-18, degrees);
+  wait(0.4, sec);
 
   // run ring intake
-  RingMech.setVelocity(100, pct); 
+  RingMech.setVelocity(100, pct);
   RingMech.spin(forward);
 
-  //Drive forward to platform
-  PID.drive2(34.5, 8030);
+  // Drive forward to platform
+  PID.drive2(33, 7000);
 
-  //Turn a more to get second pile
-  DriveTrain.turnToHeading(-90, degrees); 
-  PID.drive2(26, 8030);
+  // Turn a more to get second pile
+  DriveTrain.turnToHeading(-90, degrees);
+  PID.drive2(26, 7000);
+  PID.drive2(-3, 7000);
 
-  //Turn to platform 
+  // Turn to platform
   DriveTrain.turnToHeading(0, degrees);
 
-  //Drive to platform 
-  PID.drive2(4);
+  // Drive to platform
+  PID.drive2(16, 10000);
 
-  //Lower Fourbar
-  FourBar.spinFor(reverse, 100, degrees); 
+  // Lower Fourbar
+  FourBar.spinFor(reverse, 210, degrees);
 
-  //Release
-  Clamp.set(true); */
+  // Release
+  Clamp.set(true);
+  wait(0.1, sec);
 
+  // Backout
+  FourBar.spinFor(forward, 70, degrees);
+  wait(0.1, sec);
+  FourBar.spinFor(reverse, 440, degrees, false);
+  PID.drive2(-16, 10000);
+
+  // Release Goal 1
+  RightPiston.set(true);
+  PID.drive2(10);
+
+  // Turn to goal
+  DriveTrain.setTurnVelocity(50, percent);
+  DriveTrain.turnToHeading(-180, degrees);
+
+  // Drive to goal
+  DriveTrain.setDriveVelocity(40, percent);
+  DriveTrain.driveFor(forward, 11, inches);
+
+  // clamp
+  Clamp.set(false);
+
+  // Turn Around and Lift up Goal
+  FourBar.spinFor(580, degrees, false);
+  DriveTrain.setTurnVelocity(50, percent);
+  DriveTrain.turnToHeading(-20, degrees);
+
+  // Drive to platform
+  PID.drive2(16, 7000);
+
+  /*
+  // Lower FourBar
+  FourBar.spinFor(reverse, 190, degrees);
+
+  //Release clamp
+  Clamp.set(true);
+  wait (0.1, sec);
+
+  //Backout
+  FourBar.spinFor(forward, 70, degrees);
+  wait(0.1, sec);
+  FourBar.spinFor(reverse, 440, degrees, false);
+  PID.drive2(-16, 10000);
+  */
 }
 
 /*---------------------------------------------------------------------------*/
