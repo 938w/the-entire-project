@@ -43,6 +43,26 @@ void pre_auton(void) {
   // All activities that occur before the competition starts
   // Example: clearing encoders, setting servo positions, ...
 }
+int myThread() {
+  int count = 0;
+  while (1) {
+    int notmovingcount = 0;
+    double lastpos = RingMech.position(degrees);
+    vex::this_thread::sleep_for(25);
+    if (lastpos-RingMech.position(deg)<1){
+      notmovingcount++;
+    }
+    if (notmovingcount >= 10) {
+      Controller1.Screen.print("runnintask");
+      RingMech.spin(reverse);
+      vex::this_thread::sleep_for(25);
+      RingMech.stop();
+      RingMech.spin(forward);
+    }
+    
+  }
+  return(0);
+}
 
 /*---------------------------------------------------------------------------*/
 /*                                                                           */
@@ -64,28 +84,55 @@ void autonomous(void) {
   FourBar.stop(hold);
   RightPiston.set(true);
   Clamp.set(true);
-  DriveTrain.setTurnVelocity(80, percent);
+  vex::thread t(myThread);
+  
+  /*
+  DriveTrain.setTurnVelocity(70, percent);
 
   // goal 1
-  PID.drive2(21); 
+  PID.drive2(20.5); 
   DriveTrain.turnToHeading(-90, degrees);
-  PID.drive2(-13);
+  PID.drive2(-16, 10000);
   RightPiston.set(false);
-  PID.drive2(12);
+  PID.drive2(16.5, 10000);
 
   // mobile goal 1
   DriveTrain.turnToHeading(0, degrees);
   wait(0.2, sec);
-  PID.drive2(25);
+  PID.drive2(25.5, 10000);
   Clamp.set(false);
 
   // raise 4bar a bit
-  FourBar.spinFor(forward, 400, deg, 100, rpm, false);
+  FourBar.spinFor(forward, 580, deg, 100, rpm, false);
 
   // turn to platfrom
-  DriveTrain.turnToHeading(-30, degrees);
+  DriveTrain.setTurnVelocity(40, percent);
+  DriveTrain.turnToHeading(-27, degrees);
+  wait (0.4, sec); 
 
   // run ring intake
+  RingMech.setVelocity(100, pct); 
+  RingMech.spin(forward);
+
+  //Drive forward to platform
+  PID.drive2(34.5, 8030);
+
+  //Turn a more to get second pile
+  DriveTrain.turnToHeading(-90, degrees); 
+  PID.drive2(26, 8030);
+
+  //Turn to platform 
+  DriveTrain.turnToHeading(0, degrees);
+
+  //Drive to platform 
+  PID.drive2(4);
+
+  //Lower Fourbar
+  FourBar.spinFor(reverse, 100, degrees); 
+
+  //Release
+  Clamp.set(true); */
+
 }
 
 /*---------------------------------------------------------------------------*/
