@@ -122,20 +122,20 @@ void autonomous(void) {
   PID.drive2(-3, 7000);
 
   // Turn to platform
-  DriveTrain.turnToHeading(-5, degrees);
+  DriveTrain.turnToHeading(-7, degrees);
 
   // Drive to platform
   PID.drive2(14, 10000);
 
   // Lower Fourbar
-  FourBar.spinFor(reverse, 255, degrees);
+  FourBar.spinFor(reverse, 275, degrees);
 
   // Release
   Clamp.set(true);
   wait(0.1, sec);
 
   // Backout
-  FourBar.spinFor(forward, 95, degrees);
+  FourBar.spinFor(forward, 115, degrees);
   wait(0.1, sec);
   FourBar.spinFor(reverse, 455, degrees, false);
   PID.drive2(-16, 10000);
@@ -157,7 +157,7 @@ void autonomous(void) {
   Clamp.set(false);
 
   // Turn Around and Lift up Goal
-  FourBar.spinFor(580, degrees, false);
+  FourBar.spinFor(585, degrees, false);
   DriveTrain.setTurnVelocity(50, percent);
   DriveTrain.turnFor(left, 155, degrees); 
 
@@ -169,10 +169,10 @@ void autonomous(void) {
   FourBar.spinFor(reverse, 200, degrees);
 
   //Turn more so platform doesn't tip
-  DriveTrain.turnFor(left, 10, degrees);
+  DriveTrain.turnFor(left, 15, degrees);
 
   //Drive forward a bit more so goal doesn't fall of
-  PID.drive2(4, 10000); 
+  PID.drive2(8, 10000); 
 
   //Release clamp
   Clamp.set(true);
@@ -183,14 +183,20 @@ void autonomous(void) {
   wait(0.25, sec);
   FourBar.spinFor(reverse, 440, degrees, false);
   PID.drive2(-10, 10000);
-  Controller1.Screen.newLine(); 
-  Controller1.Screen.print(t.time(sec)); 
 
   //Move a little forward to set up turn to 2nd red goal
-  PID.drive2(4, 1000); 
+  PID.drive2(5, 1000); 
 
   //Turn to red 2
-  DriveTrain.turnFor(left, 87, degrees); 
+  DriveTrain.turnFor(right, 83, degrees); 
+
+  //Drive to red 2
+  PID.drive2(-53, 10500); 
+
+  //Clamp red goal
+  RightPiston.set(false);
+  Controller1.Screen.newLine(); 
+  Controller1.Screen.print(t.time(sec)); 
 }
 
 /*---------------------------------------------------------------------------*/
