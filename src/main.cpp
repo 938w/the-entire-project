@@ -86,14 +86,15 @@ void autonomous(void) {
   Clamp.set(true);
   FourBar.setVelocity(100, pct);
   // vex::thread t(myThread);
-  DriveTrain.setTurnVelocity(70, percent);
 
+  DriveTrain.setTurnVelocity(70, percent);
+  
   // goal 1
   PID.drive2(20.5);
   DriveTrain.turnToHeading(-90, degrees);
-  PID.drive2(-16, 10000);
+  PID.drive2(-16, 12000);
   RightPiston.set(false);
-  PID.drive2(17.5, 10000);
+  PID.drive2(17.5, 12000);
 
   // mobile goal 1
   DriveTrain.turnToHeading(0, degrees);
@@ -122,7 +123,8 @@ void autonomous(void) {
   PID.drive2(-3, 7000);
 
   // Turn to platform
-  DriveTrain.turnToHeading(-7, degrees);
+  DriveTrain.setTurnVelocity(20, percent);
+  DriveTrain.turnToHeading(-10, degrees);
 
   // Drive to platform
   PID.drive2(14, 10000);
@@ -132,22 +134,23 @@ void autonomous(void) {
 
   // Release
   Clamp.set(true);
-  wait(0.1, sec);
+  wait(0.2, sec);
 
   // Backout
   FourBar.spinFor(forward, 115, degrees);
   wait(0.1, sec);
   FourBar.spinFor(reverse, 455, degrees, false);
-  PID.drive2(-16, 10000);
-  RingMech.stop(); 
+  PID.drive2(-16, 10000); 
 
   // Release Goal 1
   RightPiston.set(true);
+  wait(0.2, sec);
   PID.drive2(10);
 
   // Turn to goal
   DriveTrain.setTurnVelocity(50, percent);
-  DriveTrain.turnToHeading(-175, degrees);
+  
+  DriveTrain.turnToHeading(-180, degrees);
 
   // Drive to goal
   DriveTrain.setDriveVelocity(40, percent);
@@ -166,7 +169,7 @@ void autonomous(void) {
 
   
   // Lower FourBar
-  FourBar.spinFor(reverse, 200, degrees);
+  FourBar.spinFor(reverse, 180, degrees);
 
   //Turn more so platform doesn't tip
   DriveTrain.turnFor(left, 15, degrees);
@@ -181,22 +184,23 @@ void autonomous(void) {
   //Backout
   FourBar.spinFor(forward, 110, degrees);
   wait(0.25, sec);
-  FourBar.spinFor(reverse, 440, degrees, false);
-  PID.drive2(-10, 10000);
+  PID.drive2(-5, 10000);
 
   //Move a little forward to set up turn to 2nd red goal
-  PID.drive2(5, 1000); 
+  //PID.drive2(5, 1000); 
 
   //Turn to red 2
-  DriveTrain.turnFor(right, 83, degrees); 
+  DriveTrain.setTurnVelocity(70, percent);
+  DriveTrain.turnToHeading(92, degrees); 
 
   //Drive to red 2
-  PID.drive2(-53, 10500); 
+  FourBar.spinFor(reverse, 440, degrees, false);
+  PID.drive2(-55, 10500); 
 
   //Clamp red goal
   RightPiston.set(false);
   Controller1.Screen.newLine(); 
-  Controller1.Screen.print(t.time(sec)); 
+  Controller1.Screen.print(t.time(sec));
 }
 
 /*---------------------------------------------------------------------------*/

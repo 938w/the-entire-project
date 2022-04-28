@@ -49,9 +49,9 @@ void pid2::drive2(double target, double velocity, double dir) {
   double derivative;
   double velocityFromTheError;
   double integral = 0;
-  double p = 80;
+  double p = 40;
   double i = 0;
-  double d = 0.005;
+  double d = 0;
 
   // distance pid
   double d_error;
@@ -75,7 +75,7 @@ void pid2::drive2(double target, double velocity, double dir) {
     lastPosition = position;
 
     // if stuck for more than 1sec
-    if (notMovingCount >= 100) {
+    if (notMovingCount >= 20) {
       break;
     }
 
