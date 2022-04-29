@@ -98,7 +98,7 @@ void autonomous(void) {
 
   // mobile goal 1
   DriveTrain.turnToHeading(0, degrees);
-  wait(0.2, sec);
+  wait(0.1, sec);
   PID.drive2(25.5, 10000);
   Clamp.set(false);
 
@@ -120,7 +120,7 @@ void autonomous(void) {
   // Turn a more to get second pile
   DriveTrain.turnToHeading(-90, degrees);
   PID.drive2(26, 7000);
-  PID.drive2(-3, 7000);
+  PID.drive2(-4, 7000);
 
   // Turn to platform
   DriveTrain.setTurnVelocity(20, percent);
@@ -131,7 +131,7 @@ void autonomous(void) {
 
   // Lower Fourbar
   FourBar.spinFor(reverse, 275, degrees);
-
+  wait(0.2, sec);
   // Release
   Clamp.set(true);
   wait(0.2, sec);
@@ -141,7 +141,7 @@ void autonomous(void) {
   wait(0.1, sec);
   FourBar.spinFor(reverse, 455, degrees, false);
   PID.drive2(-16, 10000); 
-
+  RingMech.stop();
   // Release Goal 1
   RightPiston.set(true);
   wait(0.2, sec);
@@ -184,21 +184,22 @@ void autonomous(void) {
   //Backout
   FourBar.spinFor(forward, 110, degrees);
   wait(0.25, sec);
-  PID.drive2(-5, 10000);
+  PID.drive2(-5, 8000);
 
   //Move a little forward to set up turn to 2nd red goal
   //PID.drive2(5, 1000); 
 
   //Turn to red 2
   DriveTrain.setTurnVelocity(70, percent);
-  DriveTrain.turnToHeading(92, degrees); 
+  DriveTrain.turnToHeading(95, degrees); 
 
   //Drive to red 2
   FourBar.spinFor(reverse, 440, degrees, false);
-  PID.drive2(-55, 10500); 
+  PID.drive2(-55); 
 
   //Clamp red goal
   RightPiston.set(false);
+
   Controller1.Screen.newLine(); 
   Controller1.Screen.print(t.time(sec));
 }
