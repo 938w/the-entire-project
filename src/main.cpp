@@ -35,7 +35,7 @@ bool pistonOn = false;
 /*  function is only called once after the V5 has been powered on and        */
 /*  not every time that the robot is disabled.                               */
 /*---------------------------------------------------------------------------*/
-
+bool ringmechmove = false;
 void pre_auton(void) {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
@@ -45,22 +45,36 @@ void pre_auton(void) {
 }
 int myThread() {
   int count = 0;
+  int notmovingcount = 0;
   while (1) {
-    int notmovingcount = 0;
+    if (ringmechmove) {
     double lastpos = RingMech.position(degrees);
     vex::this_thread::sleep_for(25);
-    if (lastpos - RingMech.position(deg) < 1) {
+    if (lastpos == RingMech.position(deg)) {
       notmovingcount++;
     }
     if (notmovingcount >= 10) {
       Controller1.Screen.print("runnintask");
-      RingMech.spin(reverse);
-      vex::this_thread::sleep_for(25);
+      RingMech.spin(reverse, 400, rpm);
+      vex::this_thread::sleep_for(500);
       RingMech.stop();
-      RingMech.spin(forward);
+      RingMech.spin(forward, 600, rpm);
+      notmovingcount = 0;
+    }
+    } else {
+      vex::this_thread::sleep_for(25);
     }
   }
   return (0);
+}
+void ringmechstart () {
+  RingMech.spin(forward, 600, rpm);
+  ringmechmove = true;
+
+}
+void ringmechstop () {
+  RingMech.stop();
+  ringmechmove = false;
 }
 
 /*---------------------------------------------------------------------------*/
@@ -79,13 +93,16 @@ void autonomous(void) {
   // ..........................................................................
   // a password
   // please see route.txt for the route details
-  timer t; 
+  timer ti; 
+  ti.reset(); 
   pid2 PID;
   FourBar.stop(hold);
   RightPiston.set(true);
   Clamp.set(true);
   FourBar.setVelocity(100, pct);
-  // vex::thread t(myThread);
+vex::thread t(myThread);
+wait(0.5, sec);
+Controller1.rumble("..");
 
   DriveTrain.setTurnVelocity(70, percent);
   
@@ -112,7 +129,7 @@ void autonomous(void) {
 
   // run ring intake
   RingMech.setVelocity(100, pct);
-  RingMech.spin(forward);
+  ringmechstart();
 
   // Drive forward to platform
   PID.drive2(33, 7000);
@@ -141,7 +158,7 @@ void autonomous(void) {
   wait(0.1, sec);
   FourBar.spinFor(reverse, 455, degrees, false);
   PID.drive2(-16, 10000); 
-  RingMech.stop();
+  ringmechstop();
   // Release Goal 1
   RightPiston.set(true);
   wait(0.2, sec);
@@ -150,7 +167,7 @@ void autonomous(void) {
   // Turn to goal
   DriveTrain.setTurnVelocity(50, percent);
   
-  DriveTrain.turnToHeading(-180, degrees);
+  DriveTrain.turnToHeading(-183, degrees);
 
   // Drive to goal
   DriveTrain.setDriveVelocity(40, percent);
@@ -184,24 +201,25 @@ void autonomous(void) {
   //Backout
   FourBar.spinFor(forward, 110, degrees);
   wait(0.25, sec);
-  PID.drive2(-5, 8000);
+  PID.drive2(-6, 8000);
 
   //Move a little forward to set up turn to 2nd red goal
   //PID.drive2(5, 1000); 
 
   //Turn to red 2
   DriveTrain.setTurnVelocity(70, percent);
-  DriveTrain.turnToHeading(95, degrees); 
+  DriveTrain.turnToHeading(98, degrees); 
 
   //Drive to red 2
   FourBar.spinFor(reverse, 440, degrees, false);
-  PID.drive2(-55); 
+  PID.drive2(-56, 10000); 
+  wait (0.3, sec);
 
   //Clamp red goal
   RightPiston.set(false);
 
   Controller1.Screen.newLine(); 
-  Controller1.Screen.print(t.time(sec));
+  Controller1.Screen.print(ti.time(sec));
 }
 
 /*---------------------------------------------------------------------------*/
