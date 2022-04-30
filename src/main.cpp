@@ -96,22 +96,23 @@ void autonomous(void) {
   timer ti; 
   ti.reset(); 
   pid2 PID;
+  Inertial.calibrate(); 
   FourBar.stop(hold);
   RightPiston.set(true);
   Clamp.set(true);
   FourBar.setVelocity(100, pct);
-vex::thread t(myThread);
-wait(0.5, sec);
-Controller1.rumble("..");
+  vex::thread t(myThread);
+  Controller1.rumble("..");
 
   DriveTrain.setTurnVelocity(70, percent);
   
   // goal 1
   PID.drive2(20.5);
   DriveTrain.turnToHeading(-90, degrees);
-  PID.drive2(-16, 12000);
+  Controller1.Screen.print(Inertial.yaw());
+  PID.drive2(-15.5, 12000);
   RightPiston.set(false);
-  PID.drive2(17.5, 12000);
+  PID.drive2(19, 12000);
 
   // mobile goal 1
   DriveTrain.turnToHeading(0, degrees);
@@ -124,7 +125,7 @@ Controller1.rumble("..");
 
   // turn to platfrom
   DriveTrain.setTurnVelocity(30, percent);
-  DriveTrain.turnToHeading(-18, degrees);
+  DriveTrain.turnToHeading(-23, degrees);
   wait(0.4, sec);
 
   // run ring intake
@@ -133,18 +134,18 @@ Controller1.rumble("..");
 
   // Drive forward to platform
   PID.drive2(33, 7000);
-
+  PID.drive2(-2);
   // Turn a more to get second pile
   DriveTrain.turnToHeading(-90, degrees);
-  PID.drive2(26, 7000);
-  PID.drive2(-4, 7000);
+  PID.drive2(33, 7000);
+  PID.drive2(-10, 7000);
 
   // Turn to platform
   DriveTrain.setTurnVelocity(20, percent);
-  DriveTrain.turnToHeading(-10, degrees);
+  DriveTrain.turnToHeading(-20, degrees);
 
   // Drive to platform
-  PID.drive2(14, 10000);
+  PID.drive2(15, 10000);
 
   // Lower Fourbar
   FourBar.spinFor(reverse, 275, degrees);
@@ -167,7 +168,7 @@ Controller1.rumble("..");
   // Turn to goal
   DriveTrain.setTurnVelocity(50, percent);
   
-  DriveTrain.turnToHeading(-183, degrees);
+  DriveTrain.turnToHeading(-200, degrees);
 
   // Drive to goal
   DriveTrain.setDriveVelocity(40, percent);
@@ -186,7 +187,7 @@ Controller1.rumble("..");
 
   
   // Lower FourBar
-  FourBar.spinFor(reverse, 180, degrees);
+  FourBar.spinFor(reverse, 140, degrees);
 
   //Turn more so platform doesn't tip
   DriveTrain.turnFor(left, 15, degrees);
@@ -208,7 +209,7 @@ Controller1.rumble("..");
 
   //Turn to red 2
   DriveTrain.setTurnVelocity(70, percent);
-  DriveTrain.turnToHeading(98, degrees); 
+  DriveTrain.turnToHeading(87, degrees); 
 
   //Drive to red 2
   FourBar.spinFor(reverse, 440, degrees, false);
