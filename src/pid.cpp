@@ -39,7 +39,7 @@ void pid2::drive2(double target, double velocity, double dir) {
     yaw = Inertial.yaw();
   }
 
-  double minVelocity = 2000;
+  double minVelocity = 3000;
   int notMovingCount = 0;
   double lastPosition = 0;
 

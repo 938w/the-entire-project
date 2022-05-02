@@ -117,7 +117,7 @@ void autonomous(void) {
   // mobile goal 1
   DriveTrain.turnToHeading(0, degrees);
   wait(0.1, sec);
-  PID.drive2(25.5, 10000);
+  PID.drive2(26, 10000);
   Clamp.set(false);
 
   // raise 4bar a bit
@@ -134,15 +134,15 @@ void autonomous(void) {
 
   // Drive forward to platform
   PID.drive2(33, 7000);
-  PID.drive2(-2);
+  PID.drive2(-3);
   // Turn a more to get second pile
   DriveTrain.turnToHeading(-90, degrees);
   PID.drive2(33, 7000);
-  PID.drive2(-10, 7000);
+  PID.drive2(-11, 7000);
 
   // Turn to platform
   DriveTrain.setTurnVelocity(20, percent);
-  DriveTrain.turnToHeading(-20, degrees);
+  DriveTrain.turnToHeading(-15, degrees);
 
   // Drive to platform
   PID.drive2(15, 10000);
@@ -157,7 +157,7 @@ void autonomous(void) {
   // Backout
   FourBar.spinFor(forward, 115, degrees);
   wait(0.1, sec);
-  FourBar.spinFor(reverse, 455, degrees, false);
+  FourBar.spinFor(reverse, 455, degrees, 50, rpm, false);
   PID.drive2(-16, 10000); 
   ringmechstop();
   // Release Goal 1
@@ -180,7 +180,7 @@ void autonomous(void) {
   // Turn Around and Lift up Goal
   FourBar.spinFor(585, degrees, false);
   DriveTrain.setTurnVelocity(50, percent);
-  DriveTrain.turnFor(left, 155, degrees); 
+  DriveTrain.turnToHeading(5, degrees);
 
   // Drive to platform
   PID.drive2(18.5, 7000);
@@ -193,7 +193,7 @@ void autonomous(void) {
   DriveTrain.turnFor(left, 15, degrees);
 
   //Drive forward a bit more so goal doesn't fall of
-  PID.drive2(8, 10000); 
+  PID.drive2(7, 10000); 
 
   //Release clamp
   Clamp.set(true);
@@ -202,7 +202,7 @@ void autonomous(void) {
   //Backout
   FourBar.spinFor(forward, 110, degrees);
   wait(0.25, sec);
-  PID.drive2(-6, 8000);
+  PID.drive2(-7, 8000);
 
   //Move a little forward to set up turn to 2nd red goal
   //PID.drive2(5, 1000); 
@@ -212,13 +212,17 @@ void autonomous(void) {
   DriveTrain.turnToHeading(87, degrees); 
 
   //Drive to red 2
-  FourBar.spinFor(reverse, 440, degrees, false);
-  PID.drive2(-56, 10000); 
+  FourBar.spinFor(reverse, 500, degrees, false);
+  PID.drive2(-57.5, 10000); 
   wait (0.3, sec);
 
   //Clamp red goal
   RightPiston.set(false);
-
+  //goto neutral
+  PID.drive2(22); 
+  DriveTrain.turnToHeading(180, degrees);
+  DriveTrain.driveFor(30, inches);
+  
   Controller1.Screen.newLine(); 
   Controller1.Screen.print(ti.time(sec));
 }
